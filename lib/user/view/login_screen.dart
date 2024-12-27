@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:actual/common/component/custom_text_form_field.dart';
 import 'package:actual/common/const/colors.dart';
+import 'package:actual/common/const/data.dart';
 import 'package:actual/common/layout/default_layout.dart';
 import 'package:actual/common/view/root_tab.dart';
 import 'package:dio/dio.dart';
@@ -83,6 +84,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     );
 
+                    final accessToken = response.data['accessToken'];
+                    final refreshToken = response.data['refreshToken'];
+
+                    await storage.write(
+                      key: accessTokenKey,
+                      value: accessToken,
+                    );
+                    await storage.write(
+                      key: refreshTokenKey,
+                      value: refreshToken,
+                    );
+
                     if (context.mounted) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -90,8 +103,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     }
-
-                    print(response.data);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,
