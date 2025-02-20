@@ -37,18 +37,23 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       );
 
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
-        ),
-            (route) => false,
+      await storage.write(
+        key: accessTokenKey,
+        value: response.data['accessToken'],
       );
-    } catch (error) {
+
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (_) => const RootTab(),
         ),
-            (route) => false,
+        (route) => false,
+      );
+    } catch (error) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (_) => const LoginScreen(),
+        ),
+        (route) => false,
       );
     }
   }
