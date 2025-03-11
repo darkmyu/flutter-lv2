@@ -44,7 +44,7 @@ class RestaurantDetailScreen extends StatelessWidget {
           }
 
           final item = RestaurantDetailModel.fromJson(
-            json: snapshot.data!,
+            snapshot.data!,
           );
 
           return CustomScrollView(
