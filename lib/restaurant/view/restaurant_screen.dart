@@ -1,6 +1,8 @@
 import 'package:actual/common/const/data.dart';
+import 'package:actual/common/dio/dio.dart';
 import 'package:actual/restaurant/component/restaurant_card.dart';
 import 'package:actual/restaurant/model/restaurant_model.dart';
+import 'package:actual/restaurant/repository/restaurant_repository.dart';
 import 'package:actual/restaurant/view/restaurant_detail_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -8,20 +10,16 @@ import 'package:flutter/material.dart';
 class RestaurantScreen extends StatelessWidget {
   const RestaurantScreen({super.key});
 
-  Future<List> paginateRestaurant() async {
+  Future<List<RestaurantModel>> paginateRestaurant() async {
     final dio = Dio();
-    final accessToken = await storage.read(key: accessTokenKey);
 
-    final response = await dio.get(
-      'http://$ip/restaurant',
-      options: Options(
-        headers: {
-          'authorization': 'Bearer $accessToken',
-        },
-      ),
-    );
+    dio.interceptors.add(CustomInterceptor(storage: storage));
 
-    return response.data['data'];
+    final response =
+        await RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant')
+            .paginate();
+
+    return response.data;
   }
 
   @override
@@ -31,7 +29,7 @@ class RestaurantScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
           horizontal: 16.0,
         ),
-        child: FutureBuilder<List>(
+        child: FutureBuilder<List<RestaurantModel>>(
           future: paginateRestaurant(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -42,10 +40,7 @@ class RestaurantScreen extends StatelessWidget {
 
             return ListView.separated(
               itemBuilder: (_, index) {
-                final item = snapshot.data![index];
-                final parsedItem = RestaurantModel.fromJson(
-                  item,
-                );
+                final parsedItem = snapshot.data![index];
 
                 return GestureDetector(
                   onTap: () {
