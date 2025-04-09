@@ -23,10 +23,8 @@ final restaurantRepositoryProvider = Provider((ref) {
 });
 
 @RestApi()
-abstract class RestaurantRepository
-    implements IBasePaginationRepository<RestaurantModel> {
-  factory RestaurantRepository(Dio dio, {String baseUrl}) =
-      _RestaurantRepository;
+abstract class RestaurantRepository implements IBasePaginationRepository<RestaurantModel> {
+  factory RestaurantRepository(Dio dio, {String baseUrl}) = _RestaurantRepository;
 
   @override
   @GET('/')

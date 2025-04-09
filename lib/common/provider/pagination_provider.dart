@@ -2,7 +2,6 @@ import 'package:actual/common/model/cursor_pagination_model.dart';
 import 'package:actual/common/model/model_with_id.dart';
 import 'package:actual/common/model/pagination_params.dart';
 import 'package:actual/common/repository/base_pagination_repository.dart';
-import 'package:actual/restaurant/model/restaurant_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PaginationProvider<T extends IModelWithId, U extends IBasePaginationRepository<T>> extends StateNotifier<CursorPaginationBase> {
@@ -10,9 +9,9 @@ class PaginationProvider<T extends IModelWithId, U extends IBasePaginationReposi
 
   PaginationProvider({
     required this.repository,
-  }) : super(
-          CursorPaginationLoading(),
-        );
+  }) : super(CursorPaginationLoading()) {
+    paginate();
+  }
 
   Future<void> paginate({
     int fetchCount = 20,
@@ -88,25 +87,5 @@ class PaginationProvider<T extends IModelWithId, U extends IBasePaginationReposi
         message: '데이터를 가져오지 못했습니다.',
       );
     }
-  }
-
-  void getDetail({
-    required String id,
-  }) async {
-    if (state is! CursorPagination) {
-      await paginate();
-    }
-
-    if (state is! CursorPagination) {
-      return;
-    }
-
-    final pState = state as CursorPagination;
-
-    final response = await repository.getRestaurantDetail(id: id);
-
-    state = pState.copyWith(
-      data: pState.data.map<RestaurantModel>((e) => e.id == id ? response : e).toList(),
-    );
   }
 }
