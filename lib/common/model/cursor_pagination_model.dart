@@ -53,8 +53,7 @@ class CursorPaginationMeta {
     );
   }
 
-  factory CursorPaginationMeta.fromJson(Map<String, dynamic> json) =>
-      _$CursorPaginationMetaFromJson(json);
+  factory CursorPaginationMeta.fromJson(Map<String, dynamic> json) => _$CursorPaginationMetaFromJson(json);
 }
 
 class CursorPaginationError extends CursorPaginationBase {

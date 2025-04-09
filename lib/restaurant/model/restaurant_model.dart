@@ -1,3 +1,4 @@
+import 'package:actual/common/model/model_with_id.dart';
 import 'package:actual/common/utils/data_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,13 +11,17 @@ enum RestaurantPriceRange {
 }
 
 @JsonSerializable()
-class RestaurantModel {
+class RestaurantModel implements IModelWithId {
+  @override
   final String id;
+
   final String name;
+
   @JsonKey(
     fromJson: DataUtils.pathToUrl,
   )
   final String thumbUrl;
+
   final List<String> tags;
   final RestaurantPriceRange priceRange;
   final double ratings;
@@ -36,6 +41,5 @@ class RestaurantModel {
     required this.deliveryFee,
   });
 
-  factory RestaurantModel.fromJson(Map<String, dynamic> json) =>
-      _$RestaurantModelFromJson(json);
+  factory RestaurantModel.fromJson(Map<String, dynamic> json) => _$RestaurantModelFromJson(json);
 }
