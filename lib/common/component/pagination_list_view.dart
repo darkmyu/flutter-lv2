@@ -21,7 +21,7 @@ class PaginationListView<T extends IModelWithId> extends ConsumerStatefulWidget 
   ConsumerState<PaginationListView> createState() => _PaginationListViewState<T>();
 }
 
-class _PaginationListViewState<T extends IModelWithId> extends ConsumerState<PaginationListView> {
+class _PaginationListViewState<T extends IModelWithId> extends ConsumerState<PaginationListView<T>> {
   final ScrollController controller = ScrollController();
 
   @override
