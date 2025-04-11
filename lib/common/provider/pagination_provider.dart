@@ -50,7 +50,7 @@ class PaginationProvider<T extends IModelWithId, U extends IBasePaginationReposi
           data: pState.data,
         );
 
-        paginationParams.copyWith(
+        paginationParams = paginationParams.copyWith(
           after: pState.data.last.id,
         );
       } else {
